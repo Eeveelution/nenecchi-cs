@@ -52,8 +52,8 @@ namespace nenecchi_cs.HttpServer {
                 HttpListenerRequest  req = ctx.Request;
                 HttpListenerResponse rsp = ctx.Response;
 
-                if (req.HttpMethod == "GET") {
-                    string DictionaryKey = UrlParseUtils.ParseUntil(req.Url.ToString(), '?').Replace(ServerLocationNoPort, "").Replace(ReplacingUrl, "");
+                if (req.HttpMethod == "GET" || UrlParseUtils.ParseUntil(req.Url.ToString(), '?').Replace(ServerLocationNoPort, "").Replace(ReplacingUrl, "") == "/web/osu-submit.php") {
+                string DictionaryKey = UrlParseUtils.ParseUntil(req.Url.ToString(), '?').Replace(ServerLocationNoPort, "").Replace(ReplacingUrl, "");
                     string GetString = "";
                     try {
                         GetString = req.Url.ToString().Replace(UrlParseUtils.ParseUntil(req.Url.ToString(), '?'), "").Remove(0, 1);

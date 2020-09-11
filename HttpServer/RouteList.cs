@@ -9,6 +9,7 @@ namespace nenecchi_cs.HttpServer {
         public static void Init() {
             Routes.AddRoute("/web/osu-login.php", Handlers.osu_login.Handler, "GET");
             Routes.AddRoute("/web/osu-getscores.php", Handlers.osu_getscores.Handle, "GET");
+            Routes.AddRoute("/web/osu-submit.php", Handlers.osu_submit.Handle, "GET");
         }
     }
 }

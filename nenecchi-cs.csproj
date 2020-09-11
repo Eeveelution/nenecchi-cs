@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="Handlers\osu-getscores.cs" />
     <Compile Include="Handlers\osu-login.cs" />
+    <Compile Include="Handlers\osu-submit.cs" />
     <Compile Include="HttpServer\Tools\GetParams.cs" />
     <Compile Include="HttpServer\Objects\Params.cs" />
     <Compile Include="HttpServer\NenecchiHttpServer.cs" />

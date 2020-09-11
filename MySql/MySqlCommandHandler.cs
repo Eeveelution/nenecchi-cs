@@ -97,5 +97,33 @@ namespace nenecchi_cs.MySql {
             return ret.ToArray();
         }
 
+        public static void Insert(MySqlCtx ctx, string sql) {
+            MySqlConnection Connection = new MySqlConnection(ctx.GetConnectionString());
+
+            MySqlCommand Command = Connection.CreateCommand();
+            Command.CommandText = sql;
+
+            Command.ExecuteNonQuery();
+        }
+
+        public static void Insert(MySqlCtx ctx, string sql, NameValueCollection bindings) {
+            MySqlConnection Connection = new MySqlConnection(ctx.GetConnectionString());
+
+            MySqlCommand Command = Connection.CreateCommand();
+            Command.CommandText = sql;
+
+            try {
+                Connection.Open();
+            }
+            catch (Exception e) {
+                throw e;
+            }
+
+            foreach (string key in bindings) {
+                Command.Parameters.AddWithValue(key, bindings[key]);
+            }
+            Command.ExecuteNonQuery();
+        }
+
     }
 }
