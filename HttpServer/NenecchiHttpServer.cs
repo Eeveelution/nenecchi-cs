@@ -15,6 +15,7 @@ namespace nenecchi_cs.HttpServer {
                                     
         private string              ServerLocation;
         private string              ServerLocationNoPort;
+        private string              ReplacingUrl = "http://osu.ppy.sh";
 
         private static HttpListener Listener;
 
@@ -52,7 +53,7 @@ namespace nenecchi_cs.HttpServer {
                 HttpListenerResponse rsp = ctx.Response;
 
                 if (req.HttpMethod == "GET") {
-                    string DictionaryKey = UrlParseUtils.ParseUntil(req.Url.ToString(), '?').Replace(ServerLocationNoPort, "");
+                    string DictionaryKey = UrlParseUtils.ParseUntil(req.Url.ToString(), '?').Replace(ServerLocationNoPort, "").Replace(ReplacingUrl, "");
                     string GetString = "";
                     try {
                         GetString = req.Url.ToString().Replace(UrlParseUtils.ParseUntil(req.Url.ToString(), '?'), "").Remove(0, 1);
