@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace nenecchi_cs.Handlers {
     class osu_getscores {
         public static byte[] Handle(Params p, MySqlCtx ctx) {
-            string SQL = "SELECT * FROM scores WHERE mapmd5=@md5";
+            string SQL = "SELECT * FROM scores WHERE mapmd5=@md5 ORDER BY score DESC";
 
             NameValueCollection bindings = new NameValueCollection();
 

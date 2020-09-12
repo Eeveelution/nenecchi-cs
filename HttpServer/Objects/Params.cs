@@ -16,6 +16,10 @@ namespace nenecchi_cs.HttpServer.Objects {
         public Params(byte[] POST) {
             this._POST = POST;
         }
+        public Params(NameValueCollection GET, byte[] POST) {
+            this._GET = GET;
+            this._POST = POST;
+        }
 
         public NameValueCollection GetGetParams() {
             if(_GET != null) {

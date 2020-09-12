@@ -3,6 +3,7 @@ using nenecchi_cs.MySql;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,8 @@ namespace nenecchi_cs.Handlers {
             {
                 string GetScoreIDSQL = "SELECT * FROM scores";
                 NameValueCollection[] z = MySqlCommandHandler.Select(ctx, GetScoreIDSQL);
-                ScoreID = z.Length+1.ToString();
+                int ScoreIDInt = z.Length + 1;
+                ScoreID = ScoreIDInt.ToString();
             }
 
             bindings.Add("@scoreid", ScoreID);
@@ -57,6 +59,12 @@ namespace nenecchi_cs.Handlers {
             bindings.Add("@ranked", "True");
 
             MySqlCommandHandler.Insert(ctx, SQL, bindings);
+
+            byte[] PostReplay = p.GetPostParams();
+            byte[] OffsetFixedReplay = new byte[PostReplay.Length - 136 - 29];
+            Array.Copy(PostReplay, 136, OffsetFixedReplay, 0, PostReplay.Length - 136 - 29);
+
+            File.WriteAllBytes("replays/" + ScoreID + ".osr", OffsetFixedReplay);
 
             return new byte[1];
         }

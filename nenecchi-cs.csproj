@@ -109,6 +109,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseHandler.cs" />
+    <Compile Include="FrontendHandlers\Index.cs" />
+    <Compile Include="Handlers\osu-getreplay.cs" />
     <Compile Include="Handlers\osu-getscores.cs" />
     <Compile Include="Handlers\osu-login.cs" />
     <Compile Include="Handlers\osu-submit.cs" />

@@ -13,7 +13,7 @@ namespace nenecchi_cs {
                 = new HttpServer.NenecchiHttpServer(
                     "http://127.0.0.1:80/", 
                     new MySqlCtx(
-                        "localhost","root","","yunchan"),true);
+                        "localhost","root","","nenecchi"),true);
         }
     }
 }

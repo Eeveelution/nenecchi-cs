@@ -3,6 +3,7 @@ using nenecchi_cs.HttpServer.Tools;
 using nenecchi_cs.MySql;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -52,8 +53,8 @@ namespace nenecchi_cs.HttpServer {
                 HttpListenerRequest  req = ctx.Request;
                 HttpListenerResponse rsp = ctx.Response;
 
-                if (req.HttpMethod == "GET" || UrlParseUtils.ParseUntil(req.Url.ToString(), '?').Replace(ServerLocationNoPort, "").Replace(ReplacingUrl, "") == "/web/osu-submit.php") {
-                string DictionaryKey = UrlParseUtils.ParseUntil(req.Url.ToString(), '?').Replace(ServerLocationNoPort, "").Replace(ReplacingUrl, "");
+                if (req.HttpMethod == "GET") { 
+                    string DictionaryKey = UrlParseUtils.ParseUntil(req.Url.ToString(), '?').Replace(ServerLocationNoPort, "").Replace(ReplacingUrl, "");
                     string GetString = "";
                     try {
                         GetString = req.Url.ToString().Replace(UrlParseUtils.ParseUntil(req.Url.ToString(), '?'), "").Remove(0, 1);
@@ -77,9 +78,46 @@ namespace nenecchi_cs.HttpServer {
 
                     rsp.OutputStream.Write(Response, 0, Response.Length);
                     rsp.Close();
+                }else if(req.HttpMethod == "POST") {
+                    string DictionaryKey = UrlParseUtils.ParseUntil(req.Url.ToString(), '?').Replace(ServerLocationNoPort, "").Replace(ReplacingUrl, "");
+                    string GetString = "";
+
+                    try {
+                        GetString = req.Url.ToString().Replace(UrlParseUtils.ParseUntil(req.Url.ToString(), '?'), "").Remove(0, 1);
+                    }
+                    catch {
+                        //No Get Params Given
+                    }
+
+                    byte[] Response = new byte[0];
+
+                    try {
+                        Func<Params, MySqlCtx, byte[]> HandleFunction = Routes.RouteList[DictionaryKey].Handle;
+
+
+                        byte[] BinaryPostData;
+
+                        using(MemoryStream ms = new MemoryStream()) {
+                            req.InputStream.CopyTo(ms);
+                            BinaryPostData = ms.ToArray();
+                        }
+
+                        Response = HandleFunction(new Params(GetParams.GetGetParamsFromString(GetString), BinaryPostData), MySqlConnectionData);
+
+                    }
+                    catch (Exception e){
+                        Console.WriteLine(e.Message);
+                        Response = Encoding.UTF8.GetBytes("404");
+
+                    }
+
+                    rsp.OutputStream.Write(Response, 0, Response.Length);
+                    rsp.Close();
+
+
                 }
 
-                
+
             }
 
             MonitorThread.Join();
